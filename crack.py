@@ -1,27 +1,27 @@
 import hashlib
 
-flag = 0
 
-pass_hash = input("Enter md5 hash: ")
+def crackme_pass():
+    flag = 0
+    md5 = input("insert code md5: ")
+    file_pass = input("insert file: ")
 
-word_list = input("File name: ")
+    try:
+        file_open = open(file_pass, "r")
+    except:
+        print("file not found")
+        quit()
 
-try:
-    pass_file = open (word_list, "r")
-except:
-    print("No file found")
-    quit()
+    for word_file in file_open:
+        res = word_file.encode("utf-8")
+        hash_1 = hashlib.md5(res.strip()).hexdigest()
 
-for word in pass_file:
+        if hash_1 == md5:
+            print("password found")
+            print("password is " + word_file)
+            flag = 1
+            break
 
-    enc_word = word.encode('utf-8')
-    digest = hashlib.md5(enc_word.strip()).hexdigest()
 
-    if digest == pass_hash:
-        print("password found")
-        print("password is " + word)
-        flag = 1
-        break
-
-if flag == 0:
-    print("password/passphrase is not in the list")
+if __name__ == '__main__':
+    crackme_pass()
